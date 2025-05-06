@@ -11,6 +11,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.airbnb.lottie.LottieAnimationView
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,11 +24,14 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val lottieAnimationView: LottieAnimationView = findViewById(R.id.lottieAnimationView)
         val biometricManager = BiometricManager.from(this)
 
         when(biometricManager.canAuthenticate(BIOMETRIC_STRONG)){
             BiometricManager.BIOMETRIC_SUCCESS ->{
-                showBiometricPrompt()
+                lottieAnimationView.setOnClickListener{
+                    showBiometricPrompt()
+                }
             }
             BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE ->{
                 showToast("No hay hardware biometrico")

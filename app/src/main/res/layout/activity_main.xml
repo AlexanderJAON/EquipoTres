@@ -20,7 +20,18 @@
         android:layout_marginTop="-100dp"
         android:layout_marginEnd="100dp"
         android:textSize="50sp"
-        android:textColor="@color/blanco"
-        />
+        android:textColor="@color/blanco"/>
+
+    <ImageView
+        android:layout_width="571dp"
+        android:layout_height="636dp"
+        android:layout_marginTop="-120dp"
+        android:layout_marginEnd="-200dp"
+        android:contentDescription="@string/dog"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/doggie_launcher_foreground" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

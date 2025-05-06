@@ -51,7 +51,14 @@ class MainActivity : AppCompatActivity() {
             object : BiometricPrompt.AuthenticationCallback(){
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
+
                     showToast("Autenticación exitosa")
+
+                    //direccionamiento a pagina de administrador de citas
+
+                    //val intent = Intent(this@MainActivity, administrar::class.java )
+                    //startActivity(intent)
+                    //finish()
                 }
 
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {

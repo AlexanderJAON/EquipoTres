@@ -40,6 +40,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.biometric.ktx)
     val navVersion = "2.3.5"
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

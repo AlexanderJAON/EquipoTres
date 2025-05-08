@@ -1,20 +1,18 @@
-package com.dogAPPackage.dogapp
+package com.dogAPPackage.dogapp.view
 
 import android.os.Bundle
-import android.os.Message
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.airbnb.lottie.LottieAnimationView
+import com.dogAPPackage.dogapp.R
 
-
-class MainActivity : AppCompatActivity() {
+class  MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         val lottieAnimationView: LottieAnimationView = findViewById(R.id.lottieAnimationView)
         val biometricManager = BiometricManager.from(this)
 
-        when(biometricManager.canAuthenticate(BIOMETRIC_STRONG)){
+        when(biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)){
             BiometricManager.BIOMETRIC_SUCCESS ->{
                 lottieAnimationView.setOnClickListener{
                     showBiometricPrompt()
@@ -47,8 +45,9 @@ class MainActivity : AppCompatActivity() {
     }
     private fun showBiometricPrompt(){
         val executor = ContextCompat.getMainExecutor(this)
-        val biometricPrompt = BiometricPrompt(this, executor,
-            object : BiometricPrompt.AuthenticationCallback(){
+        val biometricPrompt = BiometricPrompt(
+            this, executor,
+            object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
 

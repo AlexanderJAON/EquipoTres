@@ -70,6 +70,19 @@
         </com.google.android.material.card.MaterialCardView>
 
 
+        <!-- Botón flotante -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAddAppointment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add"
+            android:contentDescription="Agregar Cita"
+            app:backgroundTint="#F05861"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="16dp" />
+
+
 
 
 

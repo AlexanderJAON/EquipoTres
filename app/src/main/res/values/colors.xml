@@ -2,4 +2,13 @@
 <resources>
     <color name="blanco">#FFFFFF</color>
     <color name="gris">#222222</color>
+    <color name="grisClaro">#CCCCCC</color>
+    <color name="grisOscuro">#19201e</color>
+    <color name="pink"> #F05861</color>
+    <color name="pinkDark">#C2185B</color>
+    <color name="purple">#6200EE</color>
+    <color name="purpleDark">#3700B3</color>
+    <color name="background">#F8F8F8</color>
+    <color name="textoPrincipal">#000000</color>
+    <color name="textoSecundario">#666666</color>
 </resources>

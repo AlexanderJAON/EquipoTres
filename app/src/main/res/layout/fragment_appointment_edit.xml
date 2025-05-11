@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.dogAPPackage.dogapp.viewmodel.AppointmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        tools:context=".view.fragment.AppointmentEditFragment">
+
+        <!-- Toolbar  redondeado -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="145dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_toolbar">
+
+                <!-- Botón atrás -->
+                <ImageView
+                    android:id="@+id/backButton"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="24dp"
+                    android:src="@drawable/ic_arrow_back"
+                    android:tint="@color/pink"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- Título -->
+                <TextView
+                    android:id="@+id/toolbarTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/editar_cita"
+                    android:textColor="@android:color/white"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@id/backButton"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Campo: Nombre de la Mascota -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/mascotaNameLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:hint="@string/nombre_de_la_mascota"
+            app:boxStrokeColor="@color/purple"
+            app:boxStrokeWidthFocused="2dp"
+            app:hintTextColor="@color/grisOscuro"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/mascotaName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLength="15"
+                android:text="@={viewModel.petName}"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Campo: Raza (AutoComplete) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/razaLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:hint="@string/raza"
+            app:boxStrokeColor="@color/purple"
+            app:boxStrokeWidthFocused="2dp"
+            app:hintTextColor="@color/grisOscuro"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mascotaNameLayout">
+
+            <AutoCompleteTextView
+                android:id="@+id/razaAutoComplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={viewModel.breed}"
+                android:textColor="@android:color/black"
+                tools:ignore="LabelFor" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Campo: Nombre del Propietario -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/propietarioNameLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:hint="@string/nombre_propietario"
+            app:boxStrokeColor="@color/purple"
+            app:boxStrokeWidthFocused="2dp"
+            app:hintTextColor="@color/grisOscuro"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/razaLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/propietarioName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLength="30"
+                android:text="@={viewModel.ownerName}"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Campo: Teléfono -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/telefonoLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:hint="@string/telefono"
+            app:boxStrokeColor="@color/purple"
+            app:boxStrokeWidthFocused="2dp"
+            app:hintTextColor="@color/grisOscuro"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/propietarioNameLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/telefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:text="@={viewModel.phone}"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Botón Editar Cita -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEditarCita"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:enabled="@{viewModel.isFormValid}"
+            android:text="@string/editar_cita"
+            android:textAllCaps="false"
+            android:textColor="@{viewModel.isFormValid ? @android:color/white : @color/grisOscuro}"
+            android:textStyle="bold"
+            app:backgroundTint="@color/pink"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/ic_edit"
+            app:iconTint="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/telefonoLayout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

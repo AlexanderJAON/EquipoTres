@@ -2,4 +2,16 @@
     <string name="app_name">DogApp</string>
     <string name="dog">dog</string>
     <string name="dogApp">DogApp</string>
+
+    <!-- Apartadio de "Editar Cita" -->
+    <string name="editar_cita">Editar Cita</string>
+    <string name="nombre_mascota">Nombre de la Mascota</string>
+    <string name="raza">Raza</string>
+    <string name="nombre_propietario">Nombre del Propietario</string>
+    <string name="telefono">Teléfono</string>
+    <string name="editar_cita_button">Editar Cita</string>
+    <string name="error_campos_vacios">Por favor complete todos los campos</string>
+    <string name="error_seleccion_sintoma">Selecciona un síntoma</string>
+    <string name="nombre_de_la_mascota">Nombre de la Mascota</string>
+
 </resources>

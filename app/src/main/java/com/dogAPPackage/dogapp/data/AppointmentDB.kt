@@ -11,7 +11,6 @@ import com.dogAPPackage.dogapp.utils.Constants.NAME_BD
 abstract class AppointmentDB : RoomDatabase() {
 
     abstract fun appointmentDAO(): AppointmentDao
-
     companion object {
         @Volatile
         private var INSTANCE: AppointmentDB? = null

@@ -11,4 +11,8 @@
     <color name="background">#F8F8F8</color>
     <color name="textoPrincipal">#000000</color>
     <color name="textoSecundario">#666666</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="gray">#FF808080</color>
+    <color name="gray_light">#FFD3D3D3</color>
 </resources>

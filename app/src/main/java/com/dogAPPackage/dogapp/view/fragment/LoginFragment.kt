@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
 import com.dogAPPackage.dogapp.R
 
@@ -63,9 +64,8 @@ class LoginFragment : Fragment() {
                     super.onAuthenticationSucceeded(result)
                     showToast("Autenticación exitosa")
 
-                    // Aquí puedes navegar a otro fragmento o actividad
-                    // Por ejemplo, usando Navigation Component:
-                    // findNavController().navigate(R.id.action_loginFragment_to_adminFragment)
+                    // Navegar al HomeFragment
+                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 }
 
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {

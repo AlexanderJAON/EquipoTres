@@ -22,4 +22,9 @@ interface AppointmentDao {
 
     @Update
     suspend fun updateAppointment(appointment: Appointment)
+
+    //Consultar por id para  editar
+    @Query("SELECT * FROM Appointment WHERE id = :id")
+    suspend fun getAppointmentById(id: Int): Appointment?
+
 }

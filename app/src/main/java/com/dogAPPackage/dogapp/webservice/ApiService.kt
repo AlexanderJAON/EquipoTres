@@ -8,7 +8,7 @@ import retrofit2.http.Path
 
 interface ApiService {
     @GET(END_POINT)
-    suspend fun getProducts(): MutableList<AppointmentModelResponse>
+    suspend fun getAppointments(): MutableList<AppointmentModelResponse>
 
     @GET("breeds/list/all")
     suspend fun getAllBreeds(): DogBreedsResponse

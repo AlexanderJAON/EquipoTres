@@ -41,11 +41,19 @@ class AppointmentRepository(val context: Context) {
     suspend fun getAppointmentsFromApi(): MutableList<AppointmentModelResponse> {
         return withContext(Dispatchers.IO) {
             try {
-                apiService.getProducts()
+                apiService.getAppointments()
             } catch (e: Exception) {
                 e.printStackTrace()
                 mutableListOf()
             }
         }
     }
+
+    suspend fun getAppointmentById(id: Int): Appointment? {
+        return withContext(Dispatchers.IO) {
+            appointmentDao.getAppointmentById(id)
+        }
+    }
+
+
 }

@@ -23,6 +23,23 @@ class AppointmentViewModel(application: Application) : AndroidViewModel(applicat
     private val _listAppointmentsFromApi = MutableLiveData<MutableList<AppointmentModelResponse>>()
     val listAppointmentsFromApi: LiveData<MutableList<AppointmentModelResponse>> get() = _listAppointmentsFromApi
 
+    private val _appointment = MutableLiveData<Appointment?>()
+    val appointment: LiveData<Appointment?> get() = _appointment
+
+    fun getAppointmentById(id: Int) {
+        viewModelScope.launch {
+            _progressState.value = true
+            try {
+                val result = appointmentRepository.getAppointmentById(id)
+                _appointment.value = result
+            } catch (e: Exception) {
+                _appointment.value = null
+            } finally {
+                _progressState.value = false
+            }
+        }
+    }
+
     fun saveAppointment(appointment: Appointment) {
         viewModelScope.launch {
             _progressState.value = true

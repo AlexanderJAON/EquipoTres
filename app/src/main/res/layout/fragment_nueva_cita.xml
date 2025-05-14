@@ -7,21 +7,20 @@
         <variable
             name="viewModel"
             type="com.dogAPPackage.dogapp.viewmodel.AppointmentViewModel" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
-        android:padding="22dp"
+        android:padding="25dp"
         tools:context=".view.fragment.NuevaCitaFragment">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/toolbar"
-            android:layout_width="2.3in"
+            android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             app:cardPreventCornerOverlap="false"
             app:cardUseCompatPadding="false"
             app:layout_constraintTop_toTopOf="parent"
@@ -60,10 +59,9 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilNombreMascota"
-            android:layout_width="150pt"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="33dp"
             android:hint="Nombre de la Mascota"
@@ -83,7 +81,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilRaza"
-            android:layout_width="150pt"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="27dp"
             app:boxStrokeColor="@color/purple"
@@ -105,7 +103,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilNombrePropietario"
-            android:layout_width="150pt"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="27dp"
             android:hint="Nombre del Propietario"
@@ -125,7 +123,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilTelefono"
-            android:layout_width="150pt"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="27dp"
             android:hint="Teléfono"
@@ -145,13 +143,13 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilSintomas"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="150dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             android:hint="Síntomas"
-
+            app:endIconMode="dropdown_menu"
             app:layout_constraintTop_toBottomOf="@id/tilTelefono"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -167,13 +165,12 @@
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
                 android:background="@android:color/transparent"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGuardar"
-            android:layout_width="80pt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="90dp"
             android:backgroundTint="@color/pink"
@@ -181,11 +178,11 @@
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:drawableStart="@drawable/ic_guardar"
             android:drawablePadding="8dp"
+            app:icon="@drawable/ic_guardar"
+            app:iconTint="@color/gris"
             app:layout_constraintTop_toBottomOf="@id/tilSintomas"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

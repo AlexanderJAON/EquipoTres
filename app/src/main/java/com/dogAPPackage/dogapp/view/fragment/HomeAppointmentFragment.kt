@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dogAPPackage.dogapp.databinding.FragmentHomeAppointmentBinding
 import com.dogAPPackage.dogapp.view.adapter.AppointmentAdapter
 import com.dogAPPackage.dogapp.viewmodel.AppointmentViewModel
+import com.dogAPPackage.dogapp.R
 
 class HomeAppointmentFragment : Fragment() {
     private lateinit var binding: FragmentHomeAppointmentBinding
@@ -35,7 +36,7 @@ class HomeAppointmentFragment : Fragment() {
 
     private fun controladores() {
         binding.fabAddAppointment.setOnClickListener {
-            //findNavController().navigate(R.id.action_homeAppointmentFragment_to_addAppointmentFragment)
+            findNavController().navigate(R.id.action_homeAppointmentFragment_to_addAppointmentFragment)
         }
     }
 

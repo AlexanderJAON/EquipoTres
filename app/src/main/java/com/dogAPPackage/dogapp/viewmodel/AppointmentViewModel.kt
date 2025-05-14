@@ -10,7 +10,11 @@ import com.dogAPPackage.dogapp.model.AppointmentModelResponse
 import com.dogAPPackage.dogapp.repository.AppointmentRepository
 import kotlinx.coroutines.launch
 
+
 class AppointmentViewModel(application: Application) : AndroidViewModel(application) {
+    private val _imageUrl = MutableLiveData<String>()
+    val imageUrl: LiveData<String> get() = _imageUrl
+
     private val context = getApplication<Application>()
     private val appointmentRepository = AppointmentRepository(context)
 
@@ -25,6 +29,30 @@ class AppointmentViewModel(application: Application) : AndroidViewModel(applicat
 
     private val _appointment = MutableLiveData<Appointment?>()
     val appointment: LiveData<Appointment?> get() = _appointment
+
+    private val _breedsList = MutableLiveData<List<String>>()
+    val breedsList: LiveData<List<String>> get() = _breedsList
+
+    fun getBreedsFromApi() {
+        viewModelScope.launch {
+            try {
+                _breedsList.value = appointmentRepository.getAllBreeds()
+            } catch (e: Exception) {
+                _breedsList.value = emptyList()
+            }
+        }
+    }
+
+    fun getRandomImageByBreed(breed: String) {
+        viewModelScope.launch {
+            try {
+                val imageUrl = appointmentRepository.getRandomImageByBreed(breed)
+                _imageUrl.value = imageUrl
+            } catch (e: Exception) {
+                _imageUrl.value = null
+            }
+        }
+    }
 
     fun getAppointmentById(id: Int) {
         viewModelScope.launch {

@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import android.text.TextWatcher
 import android.text.Editable
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.dogAPPackage.dogapp.R
 import com.dogAPPackage.dogapp.model.Appointment
@@ -25,7 +26,7 @@ import kotlinx.coroutines.withContext
 class AppointmentEditFragment : Fragment() {
 
     private val viewModel: AppointmentViewModel by viewModels()
-    private var appointmentId: Int = -1
+    private var appointmentId: Int = 10 //precargar los datos de la cita a editar
 
     private lateinit var mascotaName: EditText
     private lateinit var razaAutoComplete: AutoCompleteTextView
@@ -41,7 +42,7 @@ class AppointmentEditFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            appointmentId = it.getInt("appointmentId", -1)
+            appointmentId = it.getInt("appointmentId", appointmentId)
         }
 
         if (appointmentId != -1) {
@@ -96,7 +97,7 @@ class AppointmentEditFragment : Fragment() {
             )
             viewModel.updateAppointment(updatedAppointment)
             Toast.makeText(requireContext(), "Cita actualizada", Toast.LENGTH_SHORT).show()
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            findNavController().navigate(R.id.action_appointmentEditFragment_to_homeFragment) // Ir a la pantalla de inicio (Home)
         }
 
         // Manejo del botón de retroceso

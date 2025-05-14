@@ -20,6 +20,27 @@ class AppointmentRepository(val context: Context) {
         }
     }
 
+    suspend fun getAllBreeds(): List<String> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = apiService.getAllBreeds()
+                response.message.keys.toList() // solo las razas
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emptyList()
+            }
+        }
+    }
+    suspend fun getRandomImageByBreed(breed: String): String {
+        return try {
+            val response = apiService.getRandomImageByBreed(breed)
+            response.message // Devuelve la URL de la imagen
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ""  // Si ocurre un error, devuelve una cadena vacía
+        }
+    }
+
     suspend fun getListAppointment(): MutableList<Appointment> {
         return withContext(Dispatchers.IO) {
             appointmentDao.getListAppointment()

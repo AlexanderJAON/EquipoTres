@@ -97,7 +97,7 @@ class AppointmentEditFragment : Fragment() {
             )
             viewModel.updateAppointment(updatedAppointment)
             Toast.makeText(requireContext(), "Cita actualizada", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_appointmentEditFragment_to_homeFragment) // Ir a la pantalla de inicio (Home)
+            findNavController().navigate(R.id.action_appointmentEditFragment_to_homeAppointmentFragment) // Ir a la pantalla de inicio (Home)
         }
 
         // Manejo del botón de retroceso

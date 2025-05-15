@@ -1,0 +1,19 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+
+    <!-- Fondo círculo rojo -->
+    <path
+        android:fillColor="#FF4444"
+        android:pathData="M32,4a28,28 0,1 1,0 56a28,28 0,1 1,0 -56z" />
+
+    <!-- Cruz blanca -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M20,20 L44,44 M44,20 L20,44" />
+</vector>

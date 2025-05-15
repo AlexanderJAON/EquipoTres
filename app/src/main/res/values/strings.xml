@@ -23,5 +23,11 @@
         <item>Bota demasiado pelo</item>
     </string-array>
 
+    <string name="turno_format">Turno: #%d</string>
+    <string name="propietario_label">Propietario:</string>
+    <string name="telefono_label">Teléfono:</string>
+    <string name="pet_image">Imagen de la mascota</string>
+    <string name="delete">Eliminar cita</string>
+    <string name="edit">Editar cita</string>
 
 </resources>

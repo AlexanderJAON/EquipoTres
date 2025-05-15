@@ -35,6 +35,7 @@ class AppointmentEditFragment : Fragment() {
     private lateinit var btnEditarCita: Button
     private lateinit var imageViewBreed: ImageView
     private lateinit var backButton: ImageView
+    private var symptom: String = ""
 
     private lateinit var breedsList: List<String>
     private var selectedImageUrl: String = ""
@@ -80,6 +81,8 @@ class AppointmentEditFragment : Fragment() {
                 telefono.setText(it.phone)
                 selectedImageUrl = it.imageUrl.orEmpty()
 
+                symptom = it.symptom
+
                 Glide.with(this).load(it.imageUrl).into(imageViewBreed)
                 btnEditarCita.isEnabled = true
             }
@@ -92,7 +95,7 @@ class AppointmentEditFragment : Fragment() {
                 breed = razaAutoComplete.text.toString(),
                 ownerName = propietarioName.text.toString(),
                 phone = telefono.text.toString(),
-                symptom = "", // Si tienes el campo en la vista, reemplázalo
+                symptom = symptom,
                 imageUrl = selectedImageUrl
             )
             viewModel.updateAppointment(updatedAppointment)

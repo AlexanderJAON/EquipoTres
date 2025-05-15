@@ -31,11 +31,10 @@ class AppointmentAdapter(
         holder.bind(appointment)
 
         holder.itemView.setOnClickListener {
-            // Navegar al fragmento de edición y pasar el appointmentId
             val bundle = Bundle().apply {
                 putInt("appointmentId", appointment.id)
             }
-            navController.navigate(R.id.action_homeAppointmentFragment_to_appointmentEditFragment, bundle)
+            navController.navigate(R.id.action_homeAppointmentFragment_to_appointmentDetailsFragment, bundle)
         }
     }
 

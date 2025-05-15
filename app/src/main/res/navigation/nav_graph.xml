@@ -5,51 +5,75 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
+    <!-- HU 1.0: Login Fragment -->
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.dogAPPackage.dogapp.view.fragment.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_loginFragment_to_homeAppointmentFragment"
+            app:destination="@id/homeAppointmentFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
-
+    <!-- HU 2.0: Home Fragment -->
     <fragment
-        android:id="@+id/homeFragment"
+        android:id="@+id/homeAppointmentFragment"
         android:name="com.dogAPPackage.dogapp.view.fragment.HomeAppointmentFragment"
-        android:label="Home"
+        android:label="Administrador de Citas"
         tools:layout="@layout/fragment_home_appointment">
         <action
             android:id="@+id/action_homeAppointmentFragment_to_addAppointmentFragment"
             app:destination="@id/addAppointmentFragment" />
         <action
-            android:id="@+id/action_homeAppointmentFragment_to_appointmentEditFragment"
-            app:destination="@id/appointmentEditFragment" />
+            android:id="@+id/action_homeAppointmentFragment_to_appointmentDetailsFragment"
+            app:destination="@id/appointmentDetailsFragment"
+
+            />
     </fragment>
 
-
+    <!-- HU 3.0: Agregar Cita -->
     <fragment
         android:id="@+id/addAppointmentFragment"
         android:name="com.dogAPPackage.dogapp.view.fragment.AddAppointmentFragment"
-        android:label="Add Appointment"
+        android:label="Nueva Cita"
         tools:layout="@layout/fragment_nueva_cita">
         <action
-            android:id="@+id/action_addAppointmentFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_addAppointmentFragment_to_homeAppointmentFragment"
+            app:destination="@id/homeAppointmentFragment"
+            app:popUpTo="@id/homeAppointmentFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
+    <!-- HU 4.0: Detalle de Cita -->
+    <fragment
+        android:id="@+id/appointmentDetailsFragment"
+        android:name="com.dogAPPackage.dogapp.view.fragment.AppointmentDetailsFragment"
+        android:label="Detalle de Cita"
+        tools:layout="@layout/fragment_appointment_details">
+        <action
+            android:id="@+id/action_appointmentDetailsFragment_to_homeAppointmentFragment"
+            app:destination="@id/homeAppointmentFragment"
+            app:popUpTo="@id/homeAppointmentFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_appointmentDetailsFragment_to_appointmentEditFragment"
+            app:destination="@id/appointmentEditFragment" />
+    </fragment>
 
-<!-- This is the fragment for editing an appointment -->
+    <!-- HU 5.0: Editar Cita -->
     <fragment
         android:id="@+id/appointmentEditFragment"
         android:name="com.dogAPPackage.dogapp.view.fragment.AppointmentEditFragment"
         android:label="Editar Cita"
         tools:layout="@layout/fragment_appointment_edit">
-
         <action
-            android:id="@+id/action_appointmentEditFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_appointmentEditFragment_to_homeAppointmentFragment"
+            app:destination="@id/homeAppointmentFragment"
+            app:popUpTo="@id/homeAppointmentFragment"
+            app:popUpToInclusive="true" />
     </fragment>
+
 </navigation>

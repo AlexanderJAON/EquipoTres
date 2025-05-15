@@ -1,6 +1,8 @@
 package com.dogAPPackage.dogapp.view.viewholder
 
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.dogAPPackage.dogapp.R
 import com.dogAPPackage.dogapp.databinding.ItemAppointmentBinding
 import com.dogAPPackage.dogapp.model.Appointment
 
@@ -13,7 +15,11 @@ class AppointmentViewHolder(private val binding: ItemAppointmentBinding) :
             tvPetId.text = "#${appointment.id}"
             tvSymptom.text = appointment.symptom
 
-            // Puedes añadir más lógica aquí según necesites
+            // Cargar la imagen circular usando Glide
+            Glide.with(root.context)
+                .load(appointment.imageUrl)
+                .placeholder(R.drawable.ic_pet_placeholder) // Asegúrate de tener este recurso
+                .into(ivPetImage)
         }
     }
 }

@@ -58,6 +58,8 @@ class HomeAppointmentFragment : Fragment() {
         }
     }
 
+
+
     private fun observerProgress() {
         appointmentViewModel.progressState.observe(viewLifecycleOwner) { status ->
             binding.progressBar.isVisible = status

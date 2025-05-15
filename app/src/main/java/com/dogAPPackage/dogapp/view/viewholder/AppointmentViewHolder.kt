@@ -15,10 +15,10 @@ class AppointmentViewHolder(private val binding: ItemAppointmentBinding) :
             tvPetId.text = "#${appointment.id}"
             tvSymptom.text = appointment.symptom
 
-            // Cargar la imagen circular usando Glide
+
             Glide.with(root.context)
                 .load(appointment.imageUrl)
-                .placeholder(R.drawable.ic_pet_placeholder) // Asegúrate de tener este recurso
+                .placeholder(R.drawable.ic_pet_placeholder)
                 .into(ivPetImage)
         }
     }

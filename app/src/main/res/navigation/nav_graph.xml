@@ -40,6 +40,33 @@
             app:destination="@id/homeFragment" />
     </fragment>
 
+    <!-- Appointment Details Fragment -->
+    <fragment
+        android:id="@+id/appointmentDetailsFragment"
+        android:name="com.dogAPPackage.dogapp.view.fragment.AppointmentDetailsFragment"
+        android:label="Detalles de la Cita"
+        tools:layout="@layout/fragment_appointment_details">
+
+        <!-- Recibir ID de la cita -->
+        <argument
+            android:name="appointmentId"
+            app:argType="integer" />
+
+        <!-- Navegar a editar cita -->
+        <action
+            android:id="@+id/action_appointmentDetailsFragment_to_appointmentEditFragment"
+            app:destination="@id/appointmentEditFragment" />
+
+        <!-- Navegar a Home (HU 2.0) -->
+        <action
+            android:id="@+id/action_appointmentDetailsFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <!-- Acción para navegar a edición -->
+    <action
+        android:id="@+id/action_appointmentDetailsFragment_to_appointmentEditFragment"
+        app:destination="@id/appointmentEditFragment" />
 
 <!-- This is the fragment for editing an appointment -->
     <fragment

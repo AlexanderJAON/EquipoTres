@@ -12,8 +12,8 @@ import kotlinx.coroutines.launch
 
 
 class AppointmentViewModel(application: Application) : AndroidViewModel(application) {
-    private val _imageUrl = MutableLiveData<String>()
-    val imageUrl: LiveData<String> get() = _imageUrl
+    private val _imageUrl = MutableLiveData<String?>()
+    val imageUrl: MutableLiveData<String?> get() = _imageUrl
 
     private val context = getApplication<Application>()
     private val appointmentRepository = AppointmentRepository(context)

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -71,13 +72,12 @@ class AppointmentDetailsFragment : Fragment() {
                     .setPositiveButton("Sí") { _, _ ->
                         viewModel.deleteAppointment(it)
                         navController.navigate(R.id.action_appointmentDetailsFragment_to_homeAppointmentFragment)
+                        Toast.makeText(requireContext(), "Cita eliminada con éxito", Toast.LENGTH_SHORT).show()
                     }
                     .setNegativeButton("No", null)
                     .show()
             }
         }
-
-
 
         // Botón editar
         binding.fabEdit.setOnClickListener {

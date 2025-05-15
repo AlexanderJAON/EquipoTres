@@ -65,7 +65,7 @@ class LoginFragment : Fragment() {
                     showToast("Autenticación exitosa")
 
                     // Navegar al HomeFragment
-                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    findNavController().navigate(R.id.action_loginFragment_to_homeAppointmentFragment)
                 }
 
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {

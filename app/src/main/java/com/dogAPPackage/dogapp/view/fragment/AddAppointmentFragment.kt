@@ -45,7 +45,7 @@ class AddAppointmentFragment : Fragment() {
         viewModel.getBreedsFromApi()
 
         binding.backButton.setOnClickListener {
-            findNavController().navigate(R.id.action_addAppointmentFragment_to_homeFragment)
+            findNavController().navigate(R.id.action_addAppointmentFragment_to_homeAppointmentFragment)
         }
 
         viewModel.breedsList.observe(viewLifecycleOwner) { breeds ->
@@ -138,7 +138,7 @@ class AddAppointmentFragment : Fragment() {
 
             Toast.makeText(requireContext(), "Cita guardada con éxito", Toast.LENGTH_SHORT).show()
 
-            findNavController().navigate(R.id.action_addAppointmentFragment_to_homeFragment)
+            findNavController().navigate(R.id.action_addAppointmentFragment_to_homeAppointmentFragment)
         }
     }
 }

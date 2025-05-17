@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.androidx.biometric.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.cardview.v7)
     val navVersion = "2.3.5"
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

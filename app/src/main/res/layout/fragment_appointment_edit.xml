@@ -199,7 +199,7 @@
             app:backgroundTint="@color/pink"
             app:cornerRadius="24dp"
             app:icon="@drawable/ic_edit"
-            app:iconTint="@android:color/white"
+            app:iconTint="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"

@@ -141,7 +141,16 @@ class AppointmentEditFragment : Fragment() {
     private fun updateSaveButtonState(enabled: Boolean) = binding.btnEditarCita.apply {
         isEnabled = enabled
         setTypeface(null, if (enabled) Typeface.BOLD else Typeface.NORMAL)
+
+        // Cambiar el color del texto
+        val textColor = if (enabled)
+            ContextCompat.getColor(context, android.R.color.white) // blanco cuando está habilitado
+        else
+            ContextCompat.getColor(context, R.color.gray) // o el color de texto inactivo
+
+        setTextColor(textColor)
     }
+
 
     // Guarda la cita actualizada usando los datos ingresados por el usuario
     private fun saveAppointment() {

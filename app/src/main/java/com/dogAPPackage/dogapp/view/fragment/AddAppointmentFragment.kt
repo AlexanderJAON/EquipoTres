@@ -38,6 +38,7 @@ class AddAppointmentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        checkFields()
         binding.etNombreMascota.filters = arrayOf(InputFilter.LengthFilter(15))
         binding.actvRaza.filters = arrayOf(InputFilter.LengthFilter(20))
         binding.etNombrePropietario.filters = arrayOf(InputFilter.LengthFilter(30))
@@ -65,7 +66,6 @@ class AddAppointmentFragment : Fragment() {
         binding.etNombrePropietario.addTextChangedListener(validationTextWatcher)
         binding.etTelefono.addTextChangedListener(validationTextWatcher)
         binding.spinnerSintomas.addTextChangedListener(validationTextWatcher)
-        checkFields()
         binding.btnGuardar.setOnClickListener {
             guardarCita()
         }
@@ -86,11 +86,9 @@ class AddAppointmentFragment : Fragment() {
         val breed = binding.actvRaza.text.toString()
         val ownerName = binding.etNombrePropietario.text.toString()
         val phone = binding.etTelefono.text.toString()
-        val symptom = binding.spinnerSintomas.text.toString()
 
         binding.btnGuardar.isEnabled = petName.isNotBlank() && breed.isNotBlank() &&
-                ownerName.isNotBlank() && phone.isNotBlank() &&
-                symptom != "Síntomas"
+                ownerName.isNotBlank() && phone.isNotBlank()
 
         if (binding.btnGuardar.isEnabled) {
             binding.btnGuardar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.pink))
@@ -110,7 +108,7 @@ class AddAppointmentFragment : Fragment() {
         val phone = binding.etTelefono.text.toString()
         val symptom = binding.spinnerSintomas.text.toString()
 
-        if (symptom.isEmpty() || symptom == "Selecciona un síntoma") {
+        if (symptom.isEmpty() || symptom == "Síntomas") {
             Toast.makeText(requireContext(), "Selecciona un síntoma", Toast.LENGTH_SHORT).show()
             return
         }

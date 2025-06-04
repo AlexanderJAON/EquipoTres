@@ -28,7 +28,6 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Ajustamos el padding según los insets del sistema
         ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -64,7 +63,6 @@ class LoginFragment : Fragment() {
                     super.onAuthenticationSucceeded(result)
                     showToast("Autenticación exitosa")
 
-                    // Navegar al HomeFragment
                     findNavController().navigate(R.id.action_loginFragment_to_homeAppointmentFragment)
                 }
 

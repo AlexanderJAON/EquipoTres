@@ -14,8 +14,6 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-        <!-- Toolbar -->
-        <!-- Toolbar -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardToolbar"
             android:layout_width="match_parent"
@@ -63,8 +61,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
-
-        <!-- Detalles de cita -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardDetails"
             android:layout_width="0dp"
@@ -84,7 +80,6 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Turno en la esquina superior derecha -->
                 <TextView
                     android:id="@+id/textTurno"
                     android:layout_width="wrap_content"
@@ -95,7 +90,6 @@
                     android:layout_marginTop="50dp"
                     android:textStyle="bold" />
 
-                <!-- Raza -->
                 <TextView
                     android:id="@+id/textRaza"
                     android:layout_width="wrap_content"
@@ -106,7 +100,6 @@
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
-                <!-- Síntoma -->
                 <TextView
                     android:id="@+id/textSintoma"
                     android:layout_width="wrap_content"
@@ -122,7 +115,6 @@
                     android:layout_marginVertical="12dp"
                     android:background="@color/pink" />
 
-                <!-- Propietario -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -144,7 +136,6 @@
                         android:text="@{appointment.ownerName}" />
                 </LinearLayout>
 
-                <!-- Teléfono -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -168,7 +159,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Imagen de mascota encima de la tarjeta -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardPetImage"
             android:layout_width="160dp"

@@ -40,21 +40,17 @@ class AppointmentDetailsFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity())[AppointmentViewModel::class.java]
         navController = findNavController()
 
-        // Obtener el ID de la cita desde los argumentos
         arguments?.let {
             appointmentId = it.getInt("appointmentId", 0)
         }
 
-        // Cargar datos de la cita
         viewModel.getAppointmentById(appointmentId)
 
-        // Observar los cambios
         viewModel.appointment.observe(viewLifecycleOwner) { appointment: Appointment? ->
             appointment?.let {
-                // Asignar datos al layout
+
                 binding.appointment = it
 
-                // Cargar la imagen manualmente con Glide
                 Glide.with(requireContext())
                     .load(it.imageUrl)
                     .placeholder(R.drawable.ic_pet_placeholder)
@@ -62,7 +58,6 @@ class AppointmentDetailsFragment : Fragment() {
             }
         }
 
-        // Botón eliminar (FAB rosa)
         binding.fabDelete.setOnClickListener {
             val appointment = viewModel.appointment.value
             appointment?.let {
@@ -79,7 +74,6 @@ class AppointmentDetailsFragment : Fragment() {
             }
         }
 
-        // Botón editar
         binding.fabEdit.setOnClickListener {
             viewModel.appointment.value?.let {
                 val bundle = Bundle().apply {
@@ -92,7 +86,6 @@ class AppointmentDetailsFragment : Fragment() {
             }
         }
 
-        // Flecha atrás (toolbar)
         binding.backButton.setOnClickListener {
             navController.navigate(R.id.action_appointmentDetailsFragment_to_homeAppointmentFragment)
         }

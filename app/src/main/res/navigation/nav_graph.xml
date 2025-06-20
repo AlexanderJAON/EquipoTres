@@ -3,35 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/homeAppointmentFragment">
 
-    <!-- HU 1.0: Login Fragment -->
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.dogAPPackage.dogapp.view.fragment.LoginFragment"
-        android:label="Login"
-        tools:layout="@layout/fragment_login">
-        <action
-            android:id="@+id/action_loginFragment_to_homeAppointmentFragment"
-            app:destination="@id/homeAppointmentFragment"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
-
-    <!-- HU 2.0: Home Fragment -->
+    <!-- HU 2.0: Home Fragment (Destino principal después del login) -->
     <fragment
         android:id="@+id/homeAppointmentFragment"
         android:name="com.dogAPPackage.dogapp.view.fragment.HomeAppointmentFragment"
         android:label="Administrador de Citas"
         tools:layout="@layout/fragment_home_appointment">
+
         <action
             android:id="@+id/action_homeAppointmentFragment_to_addAppointmentFragment"
             app:destination="@id/addAppointmentFragment" />
+
         <action
             android:id="@+id/action_homeAppointmentFragment_to_appointmentDetailsFragment"
-            app:destination="@id/appointmentDetailsFragment"
-
-            />
+            app:destination="@id/appointmentDetailsFragment" />
     </fragment>
 
     <!-- HU 3.0: Agregar Cita -->

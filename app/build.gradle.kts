@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.dogAPPackage.dogapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.dogAPPackage.dogapp"
@@ -63,6 +63,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.activity:activity-ktx:1.8.0")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation(libs.androidx.activity)
 
     // Navigation
     val navVersion = "2.7.5" // Actualizado a la última versión estable
@@ -121,4 +122,5 @@ dependencies {
 
     // Floating Action Button
     implementation("com.getbase:floatingactionbutton:1.10.1")
+
 }

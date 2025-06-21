@@ -51,6 +51,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="Email"
+            android:textColor="@color/blanco"
             android:textColorHint="@android:color/darker_gray"
             android:padding="20dp"
             android:textSize="18sp" />
@@ -74,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:hint="Password"
+            android:textColor="@color/blanco"
             android:textColorHint="@android:color/darker_gray"
             android:padding="16dp"
             android:textSize="18sp" />

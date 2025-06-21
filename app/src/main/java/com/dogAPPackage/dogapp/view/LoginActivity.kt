@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -25,9 +27,11 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         sharedPreferences = getSharedPreferences("shared", Context.MODE_PRIVATE)
 
+        setButtonsEnabled(false)
         checkSession()
         setupListeners()
         setupObservers()
+        setupTextWatchers()
     }
 
     private fun checkSession() {
@@ -63,6 +67,33 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun setupTextWatchers() {
+        val textWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                checkFieldsForEmptyValues()
+            }
+        }
+
+        binding.etEmail.addTextChangedListener(textWatcher)
+        binding.etPass.addTextChangedListener(textWatcher)
+    }
+
+    private fun checkFieldsForEmptyValues() {
+        val emailFilled = binding.etEmail.text.isNotEmpty()
+        val passFilled = binding.etPass.text.isNotEmpty()
+
+        setButtonsEnabled(emailFilled && passFilled)
+    }
+
+    private fun setButtonsEnabled(enabled: Boolean) {
+        binding.btnLogin.isEnabled = enabled
+        binding.tvRegister.isClickable = enabled
+        binding.tvRegister.alpha = if (enabled) 1.0f else 0.5f
+    }
     private fun registerUser() {
         val email = binding.etEmail.text.toString()
         val pass = binding.etPass.text.toString()

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permiso para acceder a Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,17 +15,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DogApp"
         tools:targetApi="31">
+
+        <activity
+            android:name=".view.SplashScreen"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"> <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        <!-- Splash Screen -->
+
+        <!-- Actividad principal de la aplicación -->
         <activity
             android:name=".view.MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.DogApp"
+            >
+        </activity>
         <activity
             android:name=".view.LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
         </activity>
     </application>
 

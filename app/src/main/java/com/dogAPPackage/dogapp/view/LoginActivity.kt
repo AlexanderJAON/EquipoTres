@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -15,10 +16,14 @@ import com.dogAPPackage.dogapp.R
 import com.dogAPPackage.dogapp.databinding.ActivityLoginBinding
 import com.dogAPPackage.dogapp.model.UserRequest
 import com.dogAPPackage.dogapp.viewmodel.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var loginViewModel: LoginViewModel
+    private val loginViewModel: LoginViewModel by viewModels() // Cambio clave aquí
+
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +31,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         sharedPreferences = getSharedPreferences("shared", Context.MODE_PRIVATE)
 
         setButtonsEnabled(false)
@@ -36,6 +40,7 @@ class LoginActivity : AppCompatActivity() {
         setupTextWatchers()
     }
 
+    // Todos los demás métodos permanecen EXACTAMENTE iguales
     private fun checkSession() {
         val email = sharedPreferences.getString("email", null)
         loginViewModel.sesion(email) { isEnableView ->
@@ -64,20 +69,15 @@ class LoginActivity : AppCompatActivity() {
                 goToHome()
                 finish()
             } else {
-                //Toast.makeText(this, userResponse.message, Toast.LENGTH_SHORT).show()
-                //Error en el registro
                 Toast.makeText(this, "Error en el registro", Toast.LENGTH_SHORT).show()
-
             }
         }
     }
-
 
     private fun setupTextWatchers() {
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
             override fun afterTextChanged(s: Editable?) {
                 checkFieldsForEmptyValues()
             }
@@ -90,7 +90,6 @@ class LoginActivity : AppCompatActivity() {
     private fun checkFieldsForEmptyValues() {
         val emailFilled = binding.etEmail.text.isNotEmpty()
         val passFilled = binding.etPass.text.isNotEmpty()
-
         setButtonsEnabled(emailFilled && passFilled)
     }
 
@@ -102,10 +101,11 @@ class LoginActivity : AppCompatActivity() {
         if (enabled) {
             binding.btnLogin.setTextColor(ContextCompat.getColor(this, R.color.blanco))
             binding.btnLogin.setTypeface(null, Typeface.BOLD)
-        }else{
+        } else {
             binding.btnLogin.setTypeface(null, Typeface.NORMAL)
         }
     }
+
     private fun registerUser() {
         val email = binding.etEmail.text.toString()
         val pass = binding.etPass.text.toString()

@@ -1,9 +1,7 @@
 package com.dogAPPackage.dogapp.repository
 
-import android.content.Context
 import com.dogAPPackage.dogapp.model.Appointment
 import com.dogAPPackage.dogapp.webservice.ApiService
-import com.dogAPPackage.dogapp.webservice.ApiUtils
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.Dispatchers
@@ -13,18 +11,23 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AppointmentRepository(val context: Context) {
-    private var apiService: ApiService = ApiUtils.getApiService()
+@Singleton
+class AppointmentRepository @Inject constructor(
+    private val db: FirebaseFirestore,
+    private val apiService: ApiService
+) {
     private var listenerRegistration: ListenerRegistration? = null
-    private val db = FirebaseFirestore.getInstance()
     private val appointmentsRef = db.collection("appointments")
-    private val countersRef = db.collection("counters") // Nueva colección para contadores
+    private val countersRef = db.collection("counters")
+
     // Firebase operations
     suspend fun saveAppointment(appointment: Appointment): String {
         return withContext(Dispatchers.IO) {
             try {
-                // 1. Obtener el próximo ID numérico (transacción atómica)
+                // 1. Get next numeric ID (atomic transaction)
                 val nextId = db.runTransaction { transaction ->
                     val counterDoc = transaction.get(countersRef.document("appointments_counter"))
                     var count = 1L
@@ -38,7 +41,7 @@ class AppointmentRepository(val context: Context) {
                     count
                 }.await()
 
-                // 2. Guardar la cita con ID numérico
+                // 2. Save appointment with numeric ID
                 val appointmentWithId = appointment.copy(id = nextId.toString())
                 appointmentsRef.document(nextId.toString()).set(appointmentWithId).await()
 
@@ -50,7 +53,7 @@ class AppointmentRepository(val context: Context) {
         }
     }
 
-    // Obtener todas las citas como Flow
+    // Get all appointments as Flow
     fun getAllAppointments(): Flow<List<Appointment>> = callbackFlow {
         listenerRegistration = appointmentsRef
             .addSnapshotListener { snapshot, error ->
@@ -62,7 +65,7 @@ class AppointmentRepository(val context: Context) {
                 val appointments = mutableListOf<Appointment>()
                 snapshot?.documents?.forEach { document ->
                     val appointment = document.toObject(Appointment::class.java)
-                    appointment?.id = document.id // Asignar el ID del documento
+                    appointment?.id = document.id
                     appointment?.let { appointments.add(it) }
                 }
                 trySend(appointments)
@@ -73,7 +76,7 @@ class AppointmentRepository(val context: Context) {
         }
     }.flowOn(Dispatchers.IO)
 
-    // Versión suspendida tradicional
+    // Traditional suspended version
     suspend fun getListAppointment(): List<Appointment> {
         return withContext(Dispatchers.IO) {
             try {
@@ -90,28 +93,28 @@ class AppointmentRepository(val context: Context) {
         }
     }
 
-    // Eliminar una cita
+    // Delete an appointment
     suspend fun deleteAppointment(appointment: Appointment) {
         withContext(Dispatchers.IO) {
             appointmentsRef.document(appointment.id).delete().await()
         }
     }
 
-    // Actualizar una cita
+    // Update an appointment
     suspend fun updateAppointment(appointment: Appointment) {
         withContext(Dispatchers.IO) {
             appointmentsRef.document(appointment.id).set(appointment).await()
         }
     }
 
-    // Obtener una cita por ID
+    // Get appointment by ID
     suspend fun getAppointmentById(id: String): Appointment? {
         return withContext(Dispatchers.IO) {
             try {
                 val document = appointmentsRef.document(id).get().await()
                 if (document.exists()) {
                     document.toObject(Appointment::class.java)?.also {
-                        it.id = document.id // Asignación directa al var
+                        it.id = document.id
                     }
                 } else {
                     null
@@ -121,6 +124,7 @@ class AppointmentRepository(val context: Context) {
             }
         }
     }
+
     // API operations for dog breeds
     suspend fun getAllBreeds(): List<String> {
         return withContext(Dispatchers.IO) {
@@ -145,6 +149,4 @@ class AppointmentRepository(val context: Context) {
             }
         }
     }
-
-
 }

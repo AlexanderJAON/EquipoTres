@@ -64,7 +64,10 @@ class LoginActivity : AppCompatActivity() {
                 goToHome()
                 finish()
             } else {
-                Toast.makeText(this, userResponse.message, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, userResponse.message, Toast.LENGTH_SHORT).show()
+                //Error en el registro
+                Toast.makeText(this, "Error en el registro", Toast.LENGTH_SHORT).show()
+
             }
         }
     }

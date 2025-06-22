@@ -19,7 +19,6 @@ import androidx.core.content.ContextCompat
 import android.graphics.Typeface
 import android.text.InputFilter
 import android.widget.ArrayAdapter
-import androidx.core.widget.addTextChangedListener
 
 class AppointmentEditFragment : Fragment() {
 
@@ -47,24 +46,19 @@ class AppointmentEditFragment : Fragment() {
         setupUI()
         setupListeners()
         observeViewModel()
-
         viewModel.getBreedsFromApi()
         viewModel.getAppointmentById(appointmentId)
     }
 
     private fun setupUI() {
-        // Configurar límites de caracteres
         binding.mascotaName.filters = arrayOf(InputFilter.LengthFilter(15))
         binding.razaAutoComplete.filters = arrayOf(InputFilter.LengthFilter(20))
         binding.propietarioName.filters = arrayOf(InputFilter.LengthFilter(30))
         binding.telefono.filters = arrayOf(InputFilter.LengthFilter(10))
-
-        // Configurar estado inicial del botón
         updateSaveButtonState(false)
     }
 
     private fun setupListeners() {
-        // Listener para cambios en los campos de texto
         val textWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 checkFields()
@@ -80,15 +74,12 @@ class AppointmentEditFragment : Fragment() {
             binding.propietarioName,
             binding.telefono
         ).forEach { it.addTextChangedListener(textWatcher) }
-
-        // Listener para selección de raza
         binding.razaAutoComplete.setOnItemClickListener { _, _, position, _ ->
             val selectedBreed = binding.razaAutoComplete.adapter.getItem(position).toString()
             viewModel.getRandomImageByBreed(selectedBreed)
             hasChanges = true
         }
 
-        // Botón de guardar
         binding.btnEditarCita.setOnClickListener {
             if (hasChanges) {
                 saveAppointment()
@@ -97,14 +88,12 @@ class AppointmentEditFragment : Fragment() {
             }
         }
 
-        // Botón de retroceso
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()
         }
     }
 
     private fun observeViewModel() {
-        // Observar lista de razas
         viewModel.breedsList.observe(viewLifecycleOwner) { breeds ->
             val adapter = ArrayAdapter(
                 requireContext(),
@@ -114,19 +103,16 @@ class AppointmentEditFragment : Fragment() {
             binding.razaAutoComplete.setAdapter(adapter)
         }
 
-        // Observar URL de imagen
         viewModel.imageUrl.observe(viewLifecycleOwner) { url ->
             Glide.with(requireContext())
                 .load(url ?: R.drawable.ic_pet_placeholder)
                 .into(binding.imageViewBreed)
         }
 
-        // Observar cita actual
         viewModel.appointment.observe(viewLifecycleOwner) { appointment ->
             appointment?.let { bindAppointmentData(it) }
         }
 
-        // Observar éxito de operación
         viewModel.operationSuccess.observe(viewLifecycleOwner) { success ->
             success?.let {
                 if (it) {
@@ -155,7 +141,6 @@ class AppointmentEditFragment : Fragment() {
             propietarioName.setText(appointment.ownerName)
             telefono.setText(appointment.phone)
 
-            // Cargar imagen existente
             if (!appointment.imageUrl.isNullOrEmpty()) {
                 Glide.with(requireContext())
                     .load(appointment.imageUrl)

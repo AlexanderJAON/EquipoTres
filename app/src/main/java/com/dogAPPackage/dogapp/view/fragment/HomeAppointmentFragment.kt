@@ -14,9 +14,11 @@ import com.dogAPPackage.dogapp.databinding.FragmentHomeAppointmentBinding
 import com.dogAPPackage.dogapp.view.adapter.AppointmentAdapter
 import com.dogAPPackage.dogapp.viewmodel.AppointmentViewModel
 import com.dogAPPackage.dogapp.R
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HomeAppointmentFragment : Fragment() {
     private lateinit var binding: FragmentHomeAppointmentBinding
     private val viewModel: AppointmentViewModel by viewModels()
@@ -58,7 +60,6 @@ class HomeAppointmentFragment : Fragment() {
         viewModel.progressState.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.isVisible = isLoading
 
-            // Ocultar el progressBar si hay datos
             if (!isLoading && adapter.itemCount > 0) {
                 binding.progressBar.isVisible = false
             }
@@ -68,7 +69,6 @@ class HomeAppointmentFragment : Fragment() {
             viewModel.appointmentsFlow.collectLatest { appointments ->
                 adapter.updateAppointments(appointments)
 
-                // Ocultar progressBar cuando lleguen datos
                 if (appointments.isNotEmpty()) {
                     binding.progressBar.isVisible = false
                 }

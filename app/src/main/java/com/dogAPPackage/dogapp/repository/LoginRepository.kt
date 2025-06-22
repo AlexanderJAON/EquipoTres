@@ -1,19 +1,23 @@
 package com.dogAPPackage.dogapp.repository
+
 import com.dogAPPackage.dogapp.model.UserRequest
 import com.dogAPPackage.dogapp.model.UserResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class LoginRepository {
-    private val firebaseAuth = FirebaseAuth.getInstance()
+@Singleton
+class LoginRepository @Inject constructor(
+    private val firebaseAuth: FirebaseAuth
+) {
     suspend fun registerUser(userRequest: UserRequest, userResponse: (UserResponse) -> Unit) {
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             try {
                 firebaseAuth.createUserWithEmailAndPassword(userRequest.email, userRequest.password)
                     .addOnCompleteListener { task ->
-
                         if (task.isSuccessful) {
                             val email = task.result?.user?.email
                             userResponse(
@@ -24,28 +28,10 @@ class LoginRepository {
                                 )
                             )
                         } else {
-                            val error = task.exception
-                            if (error is FirebaseAuthUserCollisionException) {
-                                // Manejo específico cuando ya existe un mismo email registrado
-                                userResponse(
-                                    UserResponse(
-                                        isRegister = false,
-                                        message = "El usuario ya existe"
-                                    )
-                                )
-                            } else {
-                                // Manejo de otros errores
-                                userResponse(
-                                    UserResponse(
-                                        isRegister = false,
-                                        message = "Error en el registro"
-                                    )
-                                )
-                            }
+                            handleRegistrationError(task.exception, userResponse)
                         }
                     }
             } catch (e: Exception) {
-                // Manejo de excepciones generales
                 userResponse(
                     UserResponse(
                         isRegister = false,
@@ -54,6 +40,26 @@ class LoginRepository {
                 )
             }
         }
+    }
 
+    private fun handleRegistrationError(error: Exception?, callback: (UserResponse) -> Unit) {
+        when (error) {
+            is FirebaseAuthUserCollisionException -> {
+                callback(
+                    UserResponse(
+                        isRegister = false,
+                        message = "El usuario ya existe"
+                    )
+                )
+            }
+            else -> {
+                callback(
+                    UserResponse(
+                        isRegister = false,
+                        message = "Error en el registro: ${error?.message ?: "Desconocido"}"
+                    )
+                )
+            }
+        }
     }
 }

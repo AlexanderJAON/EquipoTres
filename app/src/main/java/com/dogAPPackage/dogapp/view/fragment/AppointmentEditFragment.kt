@@ -19,7 +19,10 @@ import androidx.core.content.ContextCompat
 import android.graphics.Typeface
 import android.text.InputFilter
 import android.widget.ArrayAdapter
+import androidx.core.widget.addTextChangedListener
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AppointmentEditFragment : Fragment() {
 
     private var _binding: FragmentAppointmentEditBinding? = null
@@ -46,6 +49,7 @@ class AppointmentEditFragment : Fragment() {
         setupUI()
         setupListeners()
         observeViewModel()
+
         viewModel.getBreedsFromApi()
         viewModel.getAppointmentById(appointmentId)
     }
@@ -74,6 +78,7 @@ class AppointmentEditFragment : Fragment() {
             binding.propietarioName,
             binding.telefono
         ).forEach { it.addTextChangedListener(textWatcher) }
+
         binding.razaAutoComplete.setOnItemClickListener { _, _, position, _ ->
             val selectedBreed = binding.razaAutoComplete.adapter.getItem(position).toString()
             viewModel.getRandomImageByBreed(selectedBreed)
@@ -141,7 +146,7 @@ class AppointmentEditFragment : Fragment() {
             propietarioName.setText(appointment.ownerName)
             telefono.setText(appointment.phone)
 
-            if (!appointment.imageUrl.isNullOrEmpty()) {
+            if (appointment.imageUrl.isNotEmpty()) {
                 Glide.with(requireContext())
                     .load(appointment.imageUrl)
                     .into(imageViewBreed)

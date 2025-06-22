@@ -19,8 +19,9 @@ import android.graphics.Typeface
 import androidx.core.content.ContextCompat
 import android.text.InputFilter
 import androidx.lifecycle.Observer
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class AddAppointmentFragment : Fragment() {
 
     private lateinit var binding: FragmentNuevaCitaBinding

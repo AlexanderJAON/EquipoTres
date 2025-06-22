@@ -15,7 +15,9 @@ import com.dogAPPackage.dogapp.viewmodel.AppointmentViewModel
 import com.dogAPPackage.dogapp.R
 import com.dogAPPackage.dogapp.model.Appointment
 import androidx.appcompat.app.AlertDialog
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AppointmentDetailsFragment : Fragment() {
 
     private var _binding: FragmentAppointmentDetailsBinding? = null

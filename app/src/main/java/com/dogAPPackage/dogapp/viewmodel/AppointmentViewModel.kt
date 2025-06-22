@@ -1,24 +1,27 @@
 package com.dogAPPackage.dogapp.viewmodel
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dogAPPackage.dogapp.model.Appointment
 import com.dogAPPackage.dogapp.repository.AppointmentRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AppointmentViewModel(application: Application) : AndroidViewModel(application) {
-    private val context = getApplication<Application>()
-    private val appointmentRepository = AppointmentRepository(context)
+@HiltViewModel
+class AppointmentViewModel @Inject constructor(
+    private val appointmentRepository: AppointmentRepository
+) : ViewModel() {
     private val _saveResult = MutableLiveData<Boolean>()
     val saveResult: LiveData<Boolean> = _saveResult
+
     // Estados para UI
     private val _imageUrl = MutableLiveData<String?>()
     val imageUrl: LiveData<String?> get() = _imageUrl
@@ -37,7 +40,6 @@ class AppointmentViewModel(application: Application) : AndroidViewModel(applicat
 
     private val _operationSuccess = MutableLiveData<Boolean?>()
     val operationSuccess: LiveData<Boolean?> get() = _operationSuccess
-
 
     private val _appointmentsFlow = MutableStateFlow<List<Appointment>>(emptyList())
     val appointmentsFlow: StateFlow<List<Appointment>> = _appointmentsFlow.asStateFlow()
@@ -104,7 +106,6 @@ class AppointmentViewModel(application: Application) : AndroidViewModel(applicat
         viewModelScope.launch {
             _progressState.value = true
             try {
-                // Esto debería ser un Flow en el repositorio, pero mantenemos LiveData por compatibilidad
                 val appointments = appointmentRepository.getListAppointment()
                 _listAppointments.value = appointments
             } catch (e: Exception) {
@@ -151,7 +152,6 @@ class AppointmentViewModel(application: Application) : AndroidViewModel(applicat
         viewModelScope.launch {
             _progressState.value = true
             try {
-                // Limpiar el estado de progreso cuando se complete
                 _appointmentsFlow.emit(appointmentRepository.getListAppointment())
             } catch (e: Exception) {
                 _appointmentsFlow.emit(emptyList())

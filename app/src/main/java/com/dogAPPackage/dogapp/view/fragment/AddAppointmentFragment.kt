@@ -18,13 +18,14 @@ import android.text.Editable
 import android.graphics.Typeface
 import androidx.core.content.ContextCompat
 import android.text.InputFilter
-
+import androidx.lifecycle.Observer
 
 
 class AddAppointmentFragment : Fragment() {
 
     private lateinit var binding: FragmentNuevaCitaBinding
     private val viewModel: AppointmentViewModel by viewModels()
+    private var imageUrlObserver: Observer<String?>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,8 +59,6 @@ class AddAppointmentFragment : Fragment() {
         val sintomasAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, sintomas)
         binding.spinnerSintomas.setAdapter(sintomasAdapter)
         binding.spinnerSintomas.setText(sintomas[0], false)
-
-        viewModel.imageUrl.observe(viewLifecycleOwner) { imageUrl -> }
 
         binding.etNombreMascota.addTextChangedListener(validationTextWatcher)
         binding.actvRaza.addTextChangedListener(validationTextWatcher)
@@ -113,30 +112,48 @@ class AddAppointmentFragment : Fragment() {
             return
         }
 
-        viewModel.getRandomImageByBreed(breed)
+        // 1. Primero crear la cita con imagen por defecto
+        val defaultImageUrl = "https://example.com/default_dog.jpg" // Usa tu URL por defecto
+        val appointment = Appointment(
+            petName = petName,
+            breed = breed,
+            ownerName = ownerName,
+            phone = phone,
+            symptom = symptom,
+            imageUrl = defaultImageUrl // Valor por defecto
+        )
 
-        viewModel.imageUrl.observe(viewLifecycleOwner) { imageUrl ->
-            val imageUrl = imageUrl ?: ""
+        // 2. Intentar obtener mejor imagen (opcional)
+        imageUrlObserver?.let { viewModel.imageUrl.removeObserver(it) }
 
-            if (petName.isBlank() || breed.isBlank() || ownerName.isBlank() || phone.isBlank() || symptom == "Síntomas") {
-                Toast.makeText(requireContext(), "Completa todos los campos correctamente", Toast.LENGTH_SHORT).show()
-                return@observe
+        imageUrlObserver = Observer { imageUrl ->
+            // Actualizar la imagen si se obtuvo una mejor
+            val finalAppointment = if (!imageUrl.isNullOrEmpty()) {
+                appointment.copy(imageUrl = imageUrl)
+            } else {
+                appointment // Mantener la por defecto
             }
 
-            val appointment = Appointment(
-                petName = petName,
-                breed = breed,
-                ownerName = ownerName,
-                phone = phone,
-                symptom = symptom,
-                imageUrl = imageUrl
-            )
-
-            viewModel.saveAppointment(appointment)
-
-            Toast.makeText(requireContext(), "Cita guardada con éxito", Toast.LENGTH_SHORT).show()
-
-            findNavController().navigate(R.id.action_addAppointmentFragment_to_homeAppointmentFragment)
+            viewModel.saveAppointment(finalAppointment).observe(viewLifecycleOwner) { success ->
+                if (success) {
+                    Toast.makeText(requireContext(), "Cita guardada con éxito", Toast.LENGTH_SHORT)
+                        .show()
+                    findNavController().navigate(R.id.action_addAppointmentFragment_to_homeAppointmentFragment)
+                } else {
+                    Toast.makeText(requireContext(), "Error al guardar la cita", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                viewModel.imageUrl.removeObserver(imageUrlObserver!!)
+            }
         }
+
+        viewModel.imageUrl.observe(viewLifecycleOwner, imageUrlObserver!!)
+        viewModel.getRandomImageByBreed(breed)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Limpiar observers cuando el fragmento se destruye
+        imageUrlObserver?.let { viewModel.imageUrl.removeObserver(it) }
     }
 }

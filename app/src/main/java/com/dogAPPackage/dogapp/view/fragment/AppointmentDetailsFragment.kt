@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.NavController
 import com.bumptech.glide.Glide
 import com.dogAPPackage.dogapp.databinding.FragmentAppointmentDetailsBinding
 import com.dogAPPackage.dogapp.viewmodel.AppointmentViewModel
@@ -20,10 +20,8 @@ class AppointmentDetailsFragment : Fragment() {
 
     private var _binding: FragmentAppointmentDetailsBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var viewModel: AppointmentViewModel
+    private val viewModel: AppointmentViewModel by viewModels()
     private lateinit var navController: NavController
-    private var appointmentId: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,57 +35,102 @@ class AppointmentDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity())[AppointmentViewModel::class.java]
         navController = findNavController()
+        val appointmentId = arguments?.getString("appointmentId") ?: ""
 
-        arguments?.let {
-            appointmentId = it.getInt("appointmentId", 0)
-        }
+        setupObservers(appointmentId)
+        setupListeners()
+    }
 
+    private fun setupObservers(appointmentId: String) {
         viewModel.getAppointmentById(appointmentId)
 
-        viewModel.appointment.observe(viewLifecycleOwner) { appointment: Appointment? ->
+        viewModel.appointment.observe(viewLifecycleOwner) { appointment ->
             appointment?.let {
-
-                binding.appointment = it
-
-                Glide.with(requireContext())
-                    .load(it.imageUrl)
-                    .placeholder(R.drawable.ic_pet_placeholder)
-                    .into(binding.imagePet)
+                bindAppointmentData(it)
+            } ?: run {
+                showErrorAndNavigateBack()
             }
         }
 
-        binding.fabDelete.setOnClickListener {
-            val appointment = viewModel.appointment.value
-            appointment?.let {
-                AlertDialog.Builder(requireContext())
-                    .setTitle("Confirmar eliminación")
-                    .setMessage("¿Estás seguro que deseas eliminar esta cita?")
-                    .setPositiveButton("Sí") { _, _ ->
-                        viewModel.deleteAppointment(it)
-                        navController.navigate(R.id.action_appointmentDetailsFragment_to_homeAppointmentFragment)
-                        Toast.makeText(requireContext(), "Cita eliminada con éxito", Toast.LENGTH_SHORT).show()
-                    }
-                    .setNegativeButton("No", null)
-                    .show()
+        viewModel.operationSuccess.observe(viewLifecycleOwner) { success ->
+            success?.let {
+                if (!it) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error al realizar la operación",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                viewModel.resetOperationSuccess()
             }
+        }
+    }
+
+    private fun bindAppointmentData(appointment: Appointment) {
+        binding.appointment = appointment
+
+        Glide.with(requireContext())
+            .load(appointment.imageUrl)
+            .placeholder(R.drawable.ic_pet_placeholder)
+            .into(binding.imagePet)
+    }
+
+    private fun showErrorAndNavigateBack() {
+        Toast.makeText(
+            requireContext(),
+            "No se encontró la cita solicitada",
+            Toast.LENGTH_SHORT
+        ).show()
+        navController.navigate(R.id.action_appointmentDetailsFragment_to_homeAppointmentFragment)
+    }
+
+    private fun setupListeners() {
+        binding.fabDelete.setOnClickListener {
+            showDeleteConfirmationDialog()
         }
 
         binding.fabEdit.setOnClickListener {
-            viewModel.appointment.value?.let {
-                val bundle = Bundle().apply {
-                    putInt("appointmentId", it.id)
-                }
-                navController.navigate(
-                    R.id.action_appointmentDetailsFragment_to_appointmentEditFragment,
-                    bundle
-                )
-            }
+            navigateToEditFragment()
         }
 
         binding.backButton.setOnClickListener {
             navController.navigate(R.id.action_appointmentDetailsFragment_to_homeAppointmentFragment)
+        }
+    }
+
+    private fun showDeleteConfirmationDialog() {
+        viewModel.appointment.value?.let { appointment ->
+            AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.delete_confirmation_title))
+                .setMessage(getString(R.string.delete_confirmation_message))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                    deleteAppointment(appointment)
+                }
+                .setNegativeButton(getString(R.string.no), null)
+                .show()
+        }
+    }
+
+    private fun deleteAppointment(appointment: Appointment) {
+        viewModel.deleteAppointment(appointment)
+        navController.navigate(R.id.action_appointmentDetailsFragment_to_homeAppointmentFragment)
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.appointment_deleted_success),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun navigateToEditFragment() {
+        viewModel.appointment.value?.let {
+            val bundle = Bundle().apply {
+                putString("appointmentId", it.id)
+            }
+            navController.navigate(
+                R.id.action_appointmentDetailsFragment_to_appointmentEditFragment,
+                bundle
+            )
         }
     }
 

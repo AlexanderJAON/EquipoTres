@@ -11,9 +11,14 @@ import com.dogAPPackage.dogapp.view.viewholder.AppointmentViewHolder
 import com.dogAPPackage.dogapp.R
 
 class AppointmentAdapter(
-    private val appointments: List<Appointment>,
+    private var appointments: List<Appointment>,
     private val navController: NavController
 ) : RecyclerView.Adapter<AppointmentViewHolder>() {
+
+    fun updateAppointments(newAppointments: List<Appointment>) {
+        appointments = newAppointments
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppointmentViewHolder {
         val binding = ItemAppointmentBinding.inflate(

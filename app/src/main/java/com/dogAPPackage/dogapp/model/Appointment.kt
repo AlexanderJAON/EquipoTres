@@ -1,16 +1,12 @@
 package com.dogAPPackage.dogapp.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity
 data class Appointment(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val petName: String,
-    val breed: String,
-    val ownerName: String,
-    val phone: String,
-    val symptom: String,
-    val imageUrl: String
+    var id: String = "", // Cambiado de Int a String para Firebase
+    val breed: String = "",
+    val imageUrl: String = "",
+    val ownerName: String = "",
+    val petName: String = "",
+    val phone: String = "",
+    val symptoms: String = "",
+
 )

@@ -1,8 +1,6 @@
 package com.dogAPPackage.dogapp.view.adapter
 
-
 import android.os.Bundle
-import android.provider.Settings.Global.putInt
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.NavController
@@ -32,9 +30,12 @@ class AppointmentAdapter(
 
         holder.itemView.setOnClickListener {
             val bundle = Bundle().apply {
-                putInt("appointmentId", appointment.id)
+                putString("appointmentId", appointment.id)
             }
-            navController.navigate(R.id.action_homeAppointmentFragment_to_appointmentDetailsFragment, bundle)
+            navController.navigate(
+                R.id.action_homeAppointmentFragment_to_appointmentDetailsFragment,
+                bundle
+            )
         }
     }
 

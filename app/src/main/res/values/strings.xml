@@ -23,11 +23,17 @@
         <item>Bota demasiado pelo</item>
     </string-array>
 
-    <string name="turno_format">Turno: #%d</string>
+    <string name="turno_format">Turno: #%s</string> <!-- Cambiado de %d a %s -->
     <string name="propietario_label">Propietario:</string>
     <string name="telefono_label">Teléfono:</string>
     <string name="pet_image">Imagen de la mascota</string>
     <string name="delete">Eliminar cita</string>
     <string name="edit">Editar cita</string>
+
+    <string name="delete_confirmation_title">Confirmar eliminación</string>
+    <string name="delete_confirmation_message">¿Estás seguro que deseas eliminar esta cita?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="appointment_deleted_success">Cita eliminada con éxito</string>
 
 </resources>

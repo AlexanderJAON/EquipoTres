@@ -1,5 +1,6 @@
 package com.dogAPPackage.dogapp.view
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +11,7 @@ import com.dogAPPackage.dogapp.R
 import android.os.Handler
 import android.os.Looper
 
+@SuppressLint("CustomSplashScreen")
 class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

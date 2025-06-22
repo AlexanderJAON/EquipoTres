@@ -1,8 +1,6 @@
 package com.dogAPPackage.dogapp.view.adapter
 
-
 import android.os.Bundle
-import android.provider.Settings.Global.putInt
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.NavController
@@ -13,9 +11,14 @@ import com.dogAPPackage.dogapp.view.viewholder.AppointmentViewHolder
 import com.dogAPPackage.dogapp.R
 
 class AppointmentAdapter(
-    private val appointments: List<Appointment>,
+    private var appointments: List<Appointment>,
     private val navController: NavController
 ) : RecyclerView.Adapter<AppointmentViewHolder>() {
+
+    fun updateAppointments(newAppointments: List<Appointment>) {
+        appointments = newAppointments
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppointmentViewHolder {
         val binding = ItemAppointmentBinding.inflate(
@@ -32,9 +35,12 @@ class AppointmentAdapter(
 
         holder.itemView.setOnClickListener {
             val bundle = Bundle().apply {
-                putInt("appointmentId", appointment.id)
+                putString("appointmentId", appointment.id)
             }
-            navController.navigate(R.id.action_homeAppointmentFragment_to_appointmentDetailsFragment, bundle)
+            navController.navigate(
+                R.id.action_homeAppointmentFragment_to_appointmentDetailsFragment,
+                bundle
+            )
         }
     }
 

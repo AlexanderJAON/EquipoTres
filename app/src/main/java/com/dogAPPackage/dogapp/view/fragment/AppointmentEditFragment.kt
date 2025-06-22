@@ -146,7 +146,7 @@ class AppointmentEditFragment : Fragment() {
             propietarioName.setText(appointment.ownerName)
             telefono.setText(appointment.phone)
 
-            if (!appointment.imageUrl.isNullOrEmpty()) {
+            if (appointment.imageUrl.isNotEmpty()) {
                 Glide.with(requireContext())
                     .load(appointment.imageUrl)
                     .into(imageViewBreed)

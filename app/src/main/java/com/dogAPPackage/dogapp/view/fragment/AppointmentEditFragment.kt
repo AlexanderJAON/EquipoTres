@@ -1,60 +1,70 @@
 package com.dogAPPackage.dogapp.view.fragment
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.dogAPPackage.dogapp.databinding.FragmentAppointmentEditBinding
-import com.dogAPPackage.dogapp.viewmodel.AppointmentViewModel
 import com.dogAPPackage.dogapp.R
-import android.widget.ArrayAdapter
+import com.dogAPPackage.dogapp.model.Appointment
+import com.dogAPPackage.dogapp.viewmodel.AppointmentViewModel
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.core.content.ContextCompat
 import android.graphics.Typeface
 import android.text.InputFilter
-import com.bumptech.glide.Glide
+import android.widget.ArrayAdapter
+import androidx.core.widget.addTextChangedListener
 
 class AppointmentEditFragment : Fragment() {
 
     private var _binding: FragmentAppointmentEditBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: AppointmentViewModel
-    private var appointmentId: Int = 0
+    private val viewModel: AppointmentViewModel by viewModels()
     private var hasChanges = false
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentAppointmentEditBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[AppointmentViewModel::class.java]
-        appointmentId = arguments?.getInt("appointmentId") ?: 0
+
+        val appointmentId = arguments?.getString("appointmentId") ?: ""
+
         setupUI()
         setupListeners()
         observeViewModel()
+
         viewModel.getBreedsFromApi()
-        viewModel.imageUrl.value = null
-        Glide.with(requireContext()).clear(binding.imageViewBreed)
-        binding.imageViewBreed.setImageResource(R.drawable.ic_pet_placeholder)
+        viewModel.getAppointmentById(appointmentId)
     }
 
     private fun setupUI() {
-        binding.apply {
-            mascotaName.filters = arrayOf(InputFilter.LengthFilter(15))
-            razaAutoComplete.filters = arrayOf(InputFilter.LengthFilter(20))
-            propietarioName.filters = arrayOf(InputFilter.LengthFilter(30))
-            telefono.filters = arrayOf(InputFilter.LengthFilter(10))
-        }
+        // Configurar límites de caracteres
+        binding.mascotaName.filters = arrayOf(InputFilter.LengthFilter(15))
+        binding.razaAutoComplete.filters = arrayOf(InputFilter.LengthFilter(20))
+        binding.propietarioName.filters = arrayOf(InputFilter.LengthFilter(30))
+        binding.telefono.filters = arrayOf(InputFilter.LengthFilter(10))
+
+        // Configurar estado inicial del botón
         updateSaveButtonState(false)
     }
 
     private fun setupListeners() {
+        // Listener para cambios en los campos de texto
         val textWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 checkFields()
@@ -63,70 +73,140 @@ class AppointmentEditFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         }
-        listOf(binding.mascotaName, binding.razaAutoComplete, binding.propietarioName, binding.telefono)
-            .forEach { it.addTextChangedListener(textWatcher) }
 
+        listOf(
+            binding.mascotaName,
+            binding.razaAutoComplete,
+            binding.propietarioName,
+            binding.telefono
+        ).forEach { it.addTextChangedListener(textWatcher) }
+
+        // Listener para selección de raza
         binding.razaAutoComplete.setOnItemClickListener { _, _, position, _ ->
             val selectedBreed = binding.razaAutoComplete.adapter.getItem(position).toString()
             viewModel.getRandomImageByBreed(selectedBreed)
+            hasChanges = true
         }
 
-        binding.btnEditarCita.setOnClickListener { saveAppointment() }
-        binding.backButton.setOnClickListener { findNavController().navigateUp() }
+        // Botón de guardar
+        binding.btnEditarCita.setOnClickListener {
+            if (hasChanges) {
+                saveAppointment()
+            } else {
+                Toast.makeText(requireContext(), "No hay cambios para guardar", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Botón de retroceso
+        binding.backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     private fun observeViewModel() {
+        // Observar lista de razas
         viewModel.breedsList.observe(viewLifecycleOwner) { breeds ->
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, breeds)
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                breeds
+            )
             binding.razaAutoComplete.setAdapter(adapter)
         }
 
+        // Observar URL de imagen
         viewModel.imageUrl.observe(viewLifecycleOwner) { url ->
             Glide.with(requireContext())
                 .load(url ?: R.drawable.ic_pet_placeholder)
                 .into(binding.imageViewBreed)
         }
+
+        // Observar cita actual
+        viewModel.appointment.observe(viewLifecycleOwner) { appointment ->
+            appointment?.let { bindAppointmentData(it) }
+        }
+
+        // Observar éxito de operación
+        viewModel.operationSuccess.observe(viewLifecycleOwner) { success ->
+            success?.let {
+                if (it) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Cita actualizada con éxito",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    findNavController().navigate(R.id.action_appointmentEditFragment_to_homeAppointmentFragment)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error al actualizar la cita",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                viewModel.resetOperationSuccess()
+            }
+        }
+    }
+
+    private fun bindAppointmentData(appointment: Appointment) {
+        binding.apply {
+            mascotaName.setText(appointment.petName)
+            razaAutoComplete.setText(appointment.breed)
+            propietarioName.setText(appointment.ownerName)
+            telefono.setText(appointment.phone)
+
+            // Cargar imagen existente
+            if (!appointment.imageUrl.isNullOrEmpty()) {
+                Glide.with(requireContext())
+                    .load(appointment.imageUrl)
+                    .into(imageViewBreed)
+            }
+        }
+        checkFields()
     }
 
     private fun checkFields() {
-        val allFilled = listOf(
-            binding.mascotaName,
-            binding.razaAutoComplete,
-            binding.propietarioName,
-            binding.telefono
-        ).all { it.text.isNotBlank() }
-        updateSaveButtonState(allFilled)
+        val allFieldsFilled = listOf(
+            binding.mascotaName.text,
+            binding.razaAutoComplete.text,
+            binding.propietarioName.text,
+            binding.telefono.text
+        ).all { it?.isNotBlank() == true }
+
+        updateSaveButtonState(allFieldsFilled)
     }
 
-    private fun updateSaveButtonState(enabled: Boolean) = binding.btnEditarCita.apply {
-        isEnabled = enabled
-        setTypeface(null, if (enabled) Typeface.BOLD else Typeface.NORMAL)
-        val textColor = if (enabled)
-            ContextCompat.getColor(context, android.R.color.white)
-        else
-            ContextCompat.getColor(context, R.color.gray)
-        setTextColor(textColor)
+    private fun updateSaveButtonState(enabled: Boolean) {
+        binding.btnEditarCita.apply {
+            isEnabled = enabled
+            setTypeface(null, if (enabled) Typeface.BOLD else Typeface.NORMAL)
+            setTextColor(
+                ContextCompat.getColor(
+                    context,
+                    if (enabled) android.R.color.white else R.color.gray
+                )
+            )
+        }
     }
 
     private fun saveAppointment() {
-        val mascota = binding.mascotaName.text.toString().trim()
-        val raza = binding.razaAutoComplete.text.toString().trim()
-        val propietario = binding.propietarioName.text.toString().trim()
-        val telefono = binding.telefono.text.toString().trim()
+        val petName = binding.mascotaName.text.toString().trim()
+        val breed = binding.razaAutoComplete.text.toString().trim()
+        val ownerName = binding.propietarioName.text.toString().trim()
+        val phone = binding.telefono.text.toString().trim()
 
-        viewModel.appointment.value?.let { original ->
-            val updated = original.copy(
-                petName = mascota,
-                breed = raza,
-                ownerName = propietario,
-                phone = telefono,
-                imageUrl = viewModel.imageUrl.value ?: original.imageUrl
+        viewModel.appointment.value?.let { originalAppointment ->
+            val updatedAppointment = originalAppointment.copy(
+                petName = petName,
+                breed = breed,
+                ownerName = ownerName,
+                phone = phone,
+                imageUrl = viewModel.imageUrl.value ?: originalAppointment.imageUrl
             )
-            viewModel.updateAppointment(updated)
-            Toast.makeText(requireContext(), "Cita actualizada", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_appointmentEditFragment_to_homeAppointmentFragment)
+            viewModel.updateAppointment(updatedAppointment)
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

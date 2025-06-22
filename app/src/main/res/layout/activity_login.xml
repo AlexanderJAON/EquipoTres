@@ -51,6 +51,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="Email"
+            android:maxLength="40"
             android:textColor="@color/blanco"
             android:textColorHint="@android:color/darker_gray"
             android:padding="20dp"

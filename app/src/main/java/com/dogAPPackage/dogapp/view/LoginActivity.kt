@@ -3,11 +3,13 @@ package com.dogAPPackage.dogapp.view
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.dogAPPackage.dogapp.R
 import com.dogAPPackage.dogapp.databinding.ActivityLoginBinding
@@ -93,6 +95,13 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.isEnabled = enabled
         binding.tvRegister.isClickable = enabled
         binding.tvRegister.alpha = if (enabled) 1.0f else 0.5f
+
+        if (enabled) {
+            binding.btnLogin.setTextColor(ContextCompat.getColor(this, R.color.blanco))
+            binding.btnLogin.setTypeface(null, Typeface.BOLD)
+        }else{
+            binding.btnLogin.setTypeface(null, Typeface.NORMAL)
+        }
     }
     private fun registerUser() {
         val email = binding.etEmail.text.toString()

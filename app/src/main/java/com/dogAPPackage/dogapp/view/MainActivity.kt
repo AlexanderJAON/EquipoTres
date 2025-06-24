@@ -11,9 +11,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        // Inicialización de Firebase (si es necesaria)
         FirebaseApp.initializeApp(this)
 
-        // Aquí puedes mantener tu lógica actual del home
     }
 }

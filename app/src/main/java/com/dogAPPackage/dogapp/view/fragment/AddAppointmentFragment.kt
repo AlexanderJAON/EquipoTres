@@ -134,11 +134,11 @@ class AddAppointmentFragment : Fragment() {
 
             viewModel.saveAppointment(finalAppointment).observe(viewLifecycleOwner) { success ->
                 if (success) {
-                    Toast.makeText(requireContext(), "Cita guardada con éxito", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), " Cita guardada con exito ", Toast.LENGTH_SHORT)
                         .show()
                     findNavController().navigate(R.id.action_addAppointmentFragment_to_homeAppointmentFragment)
                 } else {
-                    Toast.makeText(requireContext(), "Error al guardar la cita", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), " Error al guardar la cita ", Toast.LENGTH_SHORT)
                         .show()
                 }
                 viewModel.imageUrl.removeObserver(imageUrlObserver!!)

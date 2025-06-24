@@ -22,7 +22,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private val loginViewModel: LoginViewModel by viewModels() // Cambio clave aquí
+    private val loginViewModel: LoginViewModel by viewModels()
 
     private lateinit var sharedPreferences: SharedPreferences
 

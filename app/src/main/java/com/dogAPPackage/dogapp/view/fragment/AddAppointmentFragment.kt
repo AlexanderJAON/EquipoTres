@@ -120,7 +120,7 @@ class AddAppointmentFragment : Fragment() {
             ownerName = ownerName,
             phone = phone,
             symptom = symptom,
-            imageUrl = defaultImageUrl // Valor por defecto
+            imageUrl = defaultImageUrl
         )
 
         // 2. Intentar obtener mejor imagen (opcional)

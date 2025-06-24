@@ -23,11 +23,9 @@ class AppointmentRepository @Inject constructor(
     private val appointmentsRef = db.collection("appointments")
     private val countersRef = db.collection("counters")
 
-    // Firebase operations
     suspend fun saveAppointment(appointment: Appointment): String {
         return withContext(Dispatchers.IO) {
             try {
-                // 1. Get next numeric ID (atomic transaction)
                 val nextId = db.runTransaction { transaction ->
                     val counterDoc = transaction.get(countersRef.document("appointments_counter"))
                     var count = 1L
@@ -41,7 +39,7 @@ class AppointmentRepository @Inject constructor(
                     count
                 }.await()
 
-                // 2. Save appointment with numeric ID
+
                 val appointmentWithId = appointment.copy(id = nextId.toString())
                 appointmentsRef.document(nextId.toString()).set(appointmentWithId).await()
 
@@ -53,7 +51,7 @@ class AppointmentRepository @Inject constructor(
         }
     }
 
-    // Get all appointments as Flow
+
     fun getAllAppointments(): Flow<List<Appointment>> = callbackFlow {
         listenerRegistration = appointmentsRef
             .addSnapshotListener { snapshot, error ->
@@ -76,7 +74,7 @@ class AppointmentRepository @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
-    // Traditional suspended version
+
     suspend fun getListAppointment(): List<Appointment> {
         return withContext(Dispatchers.IO) {
             try {
@@ -92,22 +90,20 @@ class AppointmentRepository @Inject constructor(
             }
         }
     }
-
-    // Delete an appointment
     suspend fun deleteAppointment(appointment: Appointment) {
         withContext(Dispatchers.IO) {
             appointmentsRef.document(appointment.id).delete().await()
         }
     }
 
-    // Update an appointment
+
     suspend fun updateAppointment(appointment: Appointment) {
         withContext(Dispatchers.IO) {
             appointmentsRef.document(appointment.id).set(appointment).await()
         }
     }
 
-    // Get appointment by ID
+
     suspend fun getAppointmentById(id: String): Appointment? {
         return withContext(Dispatchers.IO) {
             try {
@@ -125,7 +121,7 @@ class AppointmentRepository @Inject constructor(
         }
     }
 
-    // API operations for dog breeds
+
     suspend fun getAllBreeds(): List<String> {
         return withContext(Dispatchers.IO) {
             try {

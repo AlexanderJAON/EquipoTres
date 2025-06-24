@@ -1,7 +1,7 @@
 package com.dogAPPackage.dogapp.model
 
 data class Appointment(
-    var id: String = "",  // Firebase usa String como ID
+    var id: String = "",
     val petName: String = "",
     val breed: String = "",
     val ownerName: String = "",
@@ -9,6 +9,6 @@ data class Appointment(
     val symptom: String = "",
     val imageUrl: String = ""
 ) {
-    // Constructor sin parámetros requerido por Firebase
+
     constructor() : this("", "", "", "", "", "", "")
 }

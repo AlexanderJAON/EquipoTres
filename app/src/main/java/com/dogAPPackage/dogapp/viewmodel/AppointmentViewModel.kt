@@ -22,7 +22,6 @@ class AppointmentViewModel @Inject constructor(
     private val _saveResult = MutableLiveData<Boolean>()
     val saveResult: LiveData<Boolean> = _saveResult
 
-    // Estados para UI
     private val _imageUrl = MutableLiveData<String?>()
     val imageUrl: LiveData<String?> get() = _imageUrl
 
@@ -44,7 +43,6 @@ class AppointmentViewModel @Inject constructor(
     private val _appointmentsFlow = MutableStateFlow<List<Appointment>>(emptyList())
     val appointmentsFlow: StateFlow<List<Appointment>> = _appointmentsFlow.asStateFlow()
 
-    // Operaciones con la API de razas de perros
     fun getBreedsFromApi() {
         viewModelScope.launch {
             _progressState.value = true
@@ -160,12 +158,8 @@ class AppointmentViewModel @Inject constructor(
         }
     }
 
-    // Resetear estados
     fun resetOperationSuccess() {
         _operationSuccess.value = null
     }
 
-    fun resetImageUrl() {
-        _imageUrl.value = null
-    }
 }

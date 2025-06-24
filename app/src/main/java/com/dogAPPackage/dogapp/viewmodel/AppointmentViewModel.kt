@@ -72,7 +72,6 @@ class AppointmentViewModel @Inject constructor(
         }
     }
 
-    // Operaciones con Firebase para citas
     fun saveAppointment(appointment: Appointment): LiveData<Boolean> {
         viewModelScope.launch {
             _progressState.value = true

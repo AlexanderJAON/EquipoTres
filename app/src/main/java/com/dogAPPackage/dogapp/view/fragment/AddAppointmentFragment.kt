@@ -123,15 +123,13 @@ class AddAppointmentFragment : Fragment() {
             imageUrl = defaultImageUrl
         )
 
-        // 2. Intentar obtener mejor imagen (opcional)
         imageUrlObserver?.let { viewModel.imageUrl.removeObserver(it) }
 
         imageUrlObserver = Observer { imageUrl ->
-            // Actualizar la imagen si se obtuvo una mejor
             val finalAppointment = if (!imageUrl.isNullOrEmpty()) {
                 appointment.copy(imageUrl = imageUrl)
             } else {
-                appointment // Mantener la por defecto
+                appointment
             }
 
             viewModel.saveAppointment(finalAppointment).observe(viewLifecycleOwner) { success ->

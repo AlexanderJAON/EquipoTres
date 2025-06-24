@@ -158,6 +158,7 @@ class AppointmentViewModel @Inject constructor(
         }
     }
 
+
     fun resetOperationSuccess() {
         _operationSuccess.value = null
     }

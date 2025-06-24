@@ -151,7 +151,6 @@ class AddAppointmentFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Limpiar observers cuando el fragmento se destruye
         imageUrlObserver?.let { viewModel.imageUrl.removeObserver(it) }
     }
 }

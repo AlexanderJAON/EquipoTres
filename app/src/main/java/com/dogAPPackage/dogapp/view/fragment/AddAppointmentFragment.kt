@@ -113,8 +113,7 @@ class AddAppointmentFragment : Fragment() {
             return
         }
 
-        // 1. Primero crear la cita con imagen por defecto
-        val defaultImageUrl = "https://example.com/default_dog.jpg" // Usa tu URL por defecto
+        val defaultImageUrl = "https://example.com/default_dog.jpg"
         val appointment = Appointment(
             petName = petName,
             breed = breed,

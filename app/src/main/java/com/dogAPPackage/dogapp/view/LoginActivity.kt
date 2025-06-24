@@ -40,7 +40,6 @@ class LoginActivity : AppCompatActivity() {
         setupTextWatchers()
     }
 
-    // Todos los demás métodos permanecen EXACTAMENTE iguales
     private fun checkSession() {
         val email = sharedPreferences.getString("email", null)
         loginViewModel.sesion(email) { isEnableView ->

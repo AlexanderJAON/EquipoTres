@@ -1,20 +1,23 @@
+// AppointmentDetailsFragment.kt actualizado
 package com.dogAPPackage.dogapp.view.fragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.dogAPPackage.dogapp.databinding.FragmentAppointmentDetailsBinding
-import com.dogAPPackage.dogapp.viewmodel.AppointmentViewModel
 import com.dogAPPackage.dogapp.R
+import com.dogAPPackage.dogapp.databinding.FragmentAppointmentDetailsBinding
 import com.dogAPPackage.dogapp.model.Appointment
-import androidx.appcompat.app.AlertDialog
+import com.dogAPPackage.dogapp.viewmodel.AppointmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,7 +43,11 @@ class AppointmentDetailsFragment : Fragment() {
         navController = findNavController()
         val appointmentId = arguments?.getString("appointmentId") ?: ""
 
-        setupObservers(appointmentId)
+        // Simulación de carga ligera para mejorar percepción visual (HU visual refinement)
+        Handler(Looper.getMainLooper()).postDelayed({
+            setupObservers(appointmentId)
+        }, 100)
+
         setupListeners()
     }
 
@@ -78,23 +85,10 @@ class AppointmentDetailsFragment : Fragment() {
             .into(binding.imagePet)
     }
 
-    private fun showDeleteConfirmationDialog() {
-        viewModel.appointment.value?.let { appointment ->
-            AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.delete_confirmation_title))
-                .setMessage(getString(R.string.delete_confirmation_message))
-                .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                    deleteAppointment(appointment)
-                }
-                .setNegativeButton(getString(R.string.no), null)
-                .show()
-        }
-    }
-
     private fun showErrorAndNavigateBack() {
         Toast.makeText(
             requireContext(),
-            "No se encontró la cita solicitada",
+            "Cita no disponible. Intenta nuevamente.",
             Toast.LENGTH_SHORT
         ).show()
         navController.navigate(R.id.action_appointmentDetailsFragment_to_homeAppointmentFragment)
@@ -114,6 +108,30 @@ class AppointmentDetailsFragment : Fragment() {
         }
     }
 
+    private fun showDeleteConfirmationDialog() {
+        viewModel.appointment.value?.let { appointment ->
+            AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.delete_confirmation_title))
+                .setMessage(getString(R.string.delete_confirmation_message))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                    deleteAppointment(appointment)
+                }
+                .setNegativeButton(getString(R.string.no), null)
+                .show()
+        }
+    }
+
+    private fun deleteAppointment(appointment: Appointment) {
+        viewModel.deleteAppointment(appointment)
+        // Mejora de navegación: evita acumulación en backstack
+        navController.popBackStack(R.id.homeAppointmentFragment, false)
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.appointment_deleted_success),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
     private fun navigateToEditFragment() {
         viewModel.appointment.value?.let {
             val bundle = Bundle().apply {
@@ -124,16 +142,6 @@ class AppointmentDetailsFragment : Fragment() {
                 bundle
             )
         }
-    }
-
-    private fun deleteAppointment(appointment: Appointment) {
-        viewModel.deleteAppointment(appointment)
-        navController.navigate(R.id.action_appointmentDetailsFragment_to_homeAppointmentFragment)
-        Toast.makeText(
-            requireContext(),
-            getString(R.string.appointment_deleted_success),
-            Toast.LENGTH_SHORT
-        ).show()
     }
 
     override fun onDestroyView() {

@@ -1,23 +1,20 @@
-// AppointmentDetailsFragment.kt actualizado
 package com.dogAPPackage.dogapp.view.fragment
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.NavController
 import com.bumptech.glide.Glide
-import com.dogAPPackage.dogapp.R
 import com.dogAPPackage.dogapp.databinding.FragmentAppointmentDetailsBinding
-import com.dogAPPackage.dogapp.model.Appointment
 import com.dogAPPackage.dogapp.viewmodel.AppointmentViewModel
+import com.dogAPPackage.dogapp.R
+import com.dogAPPackage.dogapp.model.Appointment
+import androidx.appcompat.app.AlertDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,11 +40,7 @@ class AppointmentDetailsFragment : Fragment() {
         navController = findNavController()
         val appointmentId = arguments?.getString("appointmentId") ?: ""
 
-        // Simulación de carga ligera para mejorar percepción visual (HU visual refinement)
-        Handler(Looper.getMainLooper()).postDelayed({
-            setupObservers(appointmentId)
-        }, 100)
-
+        setupObservers(appointmentId)
         setupListeners()
     }
 
@@ -88,7 +81,7 @@ class AppointmentDetailsFragment : Fragment() {
     private fun showErrorAndNavigateBack() {
         Toast.makeText(
             requireContext(),
-            "Cita no disponible. Intenta nuevamente.",
+            "No se encontró la cita solicitada",
             Toast.LENGTH_SHORT
         ).show()
         navController.navigate(R.id.action_appointmentDetailsFragment_to_homeAppointmentFragment)
@@ -123,8 +116,7 @@ class AppointmentDetailsFragment : Fragment() {
 
     private fun deleteAppointment(appointment: Appointment) {
         viewModel.deleteAppointment(appointment)
-        // Mejora de navegación: evita acumulación en backstack
-        navController.popBackStack(R.id.homeAppointmentFragment, false)
+        navController.navigate(R.id.action_appointmentDetailsFragment_to_homeAppointmentFragment)
         Toast.makeText(
             requireContext(),
             getString(R.string.appointment_deleted_success),

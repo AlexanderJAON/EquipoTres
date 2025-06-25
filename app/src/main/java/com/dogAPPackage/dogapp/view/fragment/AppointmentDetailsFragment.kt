@@ -78,6 +78,19 @@ class AppointmentDetailsFragment : Fragment() {
             .into(binding.imagePet)
     }
 
+    private fun showDeleteConfirmationDialog() {
+        viewModel.appointment.value?.let { appointment ->
+            AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.delete_confirmation_title))
+                .setMessage(getString(R.string.delete_confirmation_message))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                    deleteAppointment(appointment)
+                }
+                .setNegativeButton(getString(R.string.no), null)
+                .show()
+        }
+    }
+
     private fun showErrorAndNavigateBack() {
         Toast.makeText(
             requireContext(),
@@ -101,16 +114,15 @@ class AppointmentDetailsFragment : Fragment() {
         }
     }
 
-    private fun showDeleteConfirmationDialog() {
-        viewModel.appointment.value?.let { appointment ->
-            AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.delete_confirmation_title))
-                .setMessage(getString(R.string.delete_confirmation_message))
-                .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                    deleteAppointment(appointment)
-                }
-                .setNegativeButton(getString(R.string.no), null)
-                .show()
+    private fun navigateToEditFragment() {
+        viewModel.appointment.value?.let {
+            val bundle = Bundle().apply {
+                putString("appointmentId", it.id)
+            }
+            navController.navigate(
+                R.id.action_appointmentDetailsFragment_to_appointmentEditFragment,
+                bundle
+            )
         }
     }
 
@@ -122,18 +134,6 @@ class AppointmentDetailsFragment : Fragment() {
             getString(R.string.appointment_deleted_success),
             Toast.LENGTH_SHORT
         ).show()
-    }
-
-    private fun navigateToEditFragment() {
-        viewModel.appointment.value?.let {
-            val bundle = Bundle().apply {
-                putString("appointmentId", it.id)
-            }
-            navController.navigate(
-                R.id.action_appointmentDetailsFragment_to_appointmentEditFragment,
-                bundle
-            )
-        }
     }
 
     override fun onDestroyView() {

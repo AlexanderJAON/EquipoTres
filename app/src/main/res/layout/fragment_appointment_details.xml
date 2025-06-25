@@ -37,7 +37,7 @@
                     android:id="@+id/backButton"
                     android:layout_width="100dp"
                     android:layout_height="34dp"
-                    android:layout_marginStart="2dp"
+                    android:layout_marginStart="1dp"
                     android:src="@drawable/ic_arrow_back"
                     app:tint="@color/pink"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -57,8 +57,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.2"
                     app:layout_constraintStart_toEndOf="@id/backButton"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="NombreMascota" />
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -88,7 +87,7 @@
                     android:layout_gravity="end"
                     android:text="@{@string/turno_format(appointment.id)}"
                     android:textColor="@color/black"
-                    android:layout_marginTop="51dp"
+                    android:layout_marginTop="50dp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -109,6 +108,7 @@
                     android:layout_marginTop="4dp"
                     android:text="@{appointment.symptom}" />
 
+                <!-- Línea divisoria -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -180,6 +180,7 @@
                 android:scaleType="centerCrop"
                 tools:src="@drawable/ic_pet_placeholder" />
         </androidx.cardview.widget.CardView>
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabDelete"

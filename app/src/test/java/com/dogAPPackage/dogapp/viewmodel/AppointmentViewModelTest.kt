@@ -62,8 +62,8 @@ class AppointmentViewModelTest {
             breed = "Labrador",
             ownerName = "Juan",
             phone = "1234567890",
-            symptom = "Fiebre",
-            imageUrl = "http://example.com/image.jpg"
+            symptom = "Bota demasiado pelo",
+            imageUrl = "https://dog.ceo/api/breeds/image/random"
         )
         `when`(appointmentRepository.saveAppointment(mockAppointment)).thenReturn("1")
         val observer = mock<Observer<Boolean>>()
@@ -83,7 +83,7 @@ class AppointmentViewModelTest {
     @Test
     fun `getRandomImageByBreed should update imageUrl`() = runTest {
         // Arrange
-        val mockImageUrl = "https://example.com/dog.jpg"
+        val mockImageUrl = "https://dog.ceo/api/breeds/image/random"
         `when`(appointmentRepository.getRandomImageByBreed("Labrador")).thenReturn(mockImageUrl)
         val observer = mock<Observer<String?>>()
         viewModel.imageUrl.observeForever(observer)
